@@ -7,6 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Resultados {
+
     @JsonAlias("results")
     List <Libro> libros;
 

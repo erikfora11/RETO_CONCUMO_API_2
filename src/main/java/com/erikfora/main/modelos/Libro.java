@@ -12,17 +12,20 @@ import java.util.List;
 @Entity
 public class Libro {
 
+    @Column
     @Id
     private int id;
 
+    @Column
     @JsonAlias("title")
     private String titulo;
 
+    @Column
     @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     @JsonAlias("authors")
     List<Autores> autores;
 
-
+    @Column
     @JsonAlias("download_count")
     private int descargas;
 

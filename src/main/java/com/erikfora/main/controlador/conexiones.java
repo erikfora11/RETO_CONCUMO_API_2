@@ -8,12 +8,10 @@ import java.util.Scanner;
 
 public class conexiones {
 
-    public String obtener_datos(){
+    public String obtener_datos(String search){
 
-         Scanner teclado = new Scanner(System.in);
-         String libro = teclado.nextLine().replaceAll(" ","%20");
-         System.out.println(libro);
-         String url = "https://gutendex.com/books/?search=" + libro;
+        search.replaceAll(" ","%20");
+         String url = "https://gutendex.com/books/?search=" + search;
 
 
          HttpClient cliente = HttpClient.newHttpClient();
