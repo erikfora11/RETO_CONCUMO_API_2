@@ -13,6 +13,7 @@ import com.erikfora.main.servicios.libroRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 
 
 public class Menu {
@@ -63,7 +64,7 @@ public class Menu {
 
                 case 4:
                     System.out.println("inserte el idioma:");
-                    String idioma = '{' + teclado.next() + '}';
+                    String idioma = teclado.next() ;
                     System.out.println(idioma);
                     libro_idioma(idioma);
                     break;
@@ -133,13 +134,13 @@ public class Menu {
 
     }
 
-    void libro_idioma(String idioma){
-       Optional<Libro> libros_encontrados = repolibro.findByLenguaje(idioma);
-       if (libros_encontrados.isPresent()){
-           System.out.println(libros_encontrados);
-       }else {
-           System.out.println("no encontrados");
-       }
+    void libro_idioma(String idioma) {
+        Optional<Libro> libros_encontrados = null;
+        try {
+            libros_encontrados = repolibro.findByLenguaje(idioma);
+        } catch (JpaSystemException e) {
+        }
+
     }
 
 

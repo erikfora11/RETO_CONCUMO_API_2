@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface libroRepo extends JpaRepository<Libro, Integer> {
 
-    @Query(value = "SELECT * FROM libros  WHERE lenguaje = :idioma ",nativeQuery = true)
+    @Query(value = "SELECT * FROM libros WHERE lenguaje LIKE  %:idioma%",nativeQuery = true)
     Optional<Libro> findByLenguaje(@Param("idioma") String lenguaje);
 }
