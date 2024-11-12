@@ -7,14 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
-@Entity
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Resultados {
-
-    @Id
     int ID;
 
-    @OneToMany()
     @JsonAlias("results")
     List <Libro> libros;
 
