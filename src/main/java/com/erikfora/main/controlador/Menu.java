@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.erikfora.main.modelos.Autores;
 import com.erikfora.main.modelos.Libro;
 import com.erikfora.main.modelos.Resultados;
 import com.erikfora.main.servicios.autorRepo;
@@ -17,9 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Menu {
     @Autowired
     private libroRepo repolibro;
+    @Autowired
+    private autorRepo repoAutor;
 
-    public Menu(libroRepo repolibro) {
+    public Menu(libroRepo repolibro,autorRepo repoAutor) {
         this.repolibro = repolibro;
+        this.repoAutor = repoAutor;
     }
 
     public void iniciar() throws JsonProcessingException {
@@ -35,6 +39,8 @@ public class Menu {
                             1. Salir
                             2. buscar titulo
                             3. buscar autor
+                            4. buscar libros con idiomas en la base de datos
+                            5. Buscar autores por año de nacimiento
                      ==========================================================      \s
                     \s""";
             System.out.println(menu);
@@ -54,6 +60,13 @@ public class Menu {
                     libro = teclado.next();
                     buscar_autor(libro);
                     break;
+
+                case 4:
+                    System.out.println("inserte el idioma:");
+                    String idioma = '{' + teclado.next() + '}';
+                    System.out.println(idioma);
+                    libro_idioma(idioma);
+                    break;
                 default:
                     System.out.println("opcion no valida");
                     break;
@@ -62,9 +75,6 @@ public class Menu {
         }
 
     }
-
-    libroRepo repo_libros = new libroRepo();
-
 
     public void buscar_libro(String libro) throws JsonProcessingException {
 
@@ -91,15 +101,46 @@ public class Menu {
 
 
         List<Libro> encontrado = resultado.getLibros().stream().findFirst().stream().toList();
-        Libro libro_Unidad = encontrado.getFirst();
-        System.out.println(libro_Unidad.toString());
-        libro_Unidad.setId(Long.parseLong(String.valueOf(Math.random())));
-        repolibro.guardar(libro_Unidad);
+        Libro libro_Unidad = new Libro();
+
+        libro_Unidad.setId(encontrado.getFirst().getId());
+        libro_Unidad.setTitulo(encontrado.getFirst().getTitulo());
+        libro_Unidad.setAutores(encontrado.getFirst().getAutores());
+        libro_Unidad.setDescargas(encontrado.getFirst().getDescargas());
+        libro_Unidad.setLenguaje(encontrado.getFirst().getLenguaje());
+
+        libro_Unidad.getAutores().getFirst().setId(libro_Unidad.getId());
+
+        System.out.println(libro_Unidad);
+        System.out.println(libro_Unidad.getAutores().toString());
+
+        repolibro.save(libro_Unidad);
 
     }
 
     public  void encontrar_autor(Resultados resultado,String autor){
-        Optional<Libro> encontrado = resultado.getLibros().stream().findFirst();
-        System.out.println(encontrado.toString());
+        List<Autores> encontrado = resultado.getLibros().getFirst().getAutores().stream().toList();
+
+        Autores autor_unidad = new Autores();
+
+        autor_unidad.setNombre(encontrado.getFirst().getNombre());
+        autor_unidad.setNacimiento(encontrado.getFirst().getNacimiento());
+        autor_unidad.setMuerte(encontrado.getFirst().getNacimiento());
+
+        System.out.println(autor_unidad.toString());
+
+        repoAutor.save(autor_unidad);
+
     }
+
+    void libro_idioma(String idioma){
+       Optional<Libro> libros_encontrados = repolibro.findByLenguaje(idioma);
+       if (libros_encontrados.isPresent()){
+           System.out.println(libros_encontrados);
+       }else {
+           System.out.println("no encontrados");
+       }
+    }
+
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class Resultados {
 
     @Id
-    long ID;
+    int ID;
 
     @OneToMany()
     @JsonAlias("results")

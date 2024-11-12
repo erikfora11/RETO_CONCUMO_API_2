@@ -15,14 +15,14 @@ public class Libro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(unique = true)
+    @Column(columnDefinition = "serial")
     @JsonAlias("title")
     private String titulo;
 
 
-    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL,fetch =FetchType.EAGER )
     @JsonAlias("authors")
     List<Autores> autores;
 
@@ -30,15 +30,36 @@ public class Libro {
     @JsonAlias("download_count")
     private int descargas;
 
-
     @JsonAlias("languages")
-    private  String lenguaje;
+    @Column(name = "lenguaje")
+    private  List<String> lenguaje;
 
-    public Long getId() {
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", autores=" + autores +
+                ", descargas=" + descargas +
+                ", lenguaje='" + lenguaje + '\'' +
+                '}';
+    }
+
+    public List<String> getLenguaje() {
+        return lenguaje;
+    }
+
+    public void setLenguaje(List<String> lenguaje) {
+        this.lenguaje = lenguaje;
+    }
+
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,13 +87,5 @@ public class Libro {
         this.descargas = descargas;
     }
 
-    @Override
-    public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", autores=" + autores +
-                ", descargas=" + descargas +
-                '}';
-    }
+
 }
