@@ -66,7 +66,7 @@ public class Menu {
                     System.out.println("inserte el idioma:");
                     String idioma = teclado.next() ;
                     System.out.println(idioma);
-                    libro_idioma(idioma);
+                    libro_idioma("%"+idioma+"%");
                     break;
                 default:
                     System.out.println("opcion no valida");
@@ -138,8 +138,11 @@ public class Menu {
         Optional<Libro> libros_encontrados = null;
         try {
             libros_encontrados = repolibro.findByLenguaje(idioma);
+            System.out.println(libros_encontrados);
         } catch (JpaSystemException e) {
         }
+
+
 
     }
 

@@ -22,7 +22,7 @@ public class Libro {
     private String titulo;
 
 
-    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL,fetch =FetchType.EAGER )
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL,fetch =FetchType.LAZY )
     @JsonAlias("authors")
     List<Autores> autores;
 
