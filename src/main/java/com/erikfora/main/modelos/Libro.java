@@ -5,35 +5,40 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Table(name = "libros")
 public class Libro {
 
-    @Column
-    @Id
-    private int id;
 
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     @JsonAlias("title")
     private String titulo;
 
-    @Column
+
     @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     @JsonAlias("authors")
     List<Autores> autores;
 
-    @Column
+
     @JsonAlias("download_count")
     private int descargas;
 
-    public int getId() {
+
+    @JsonAlias("languages")
+    private  String lenguaje;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
